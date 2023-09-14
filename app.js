@@ -16,8 +16,8 @@ app.get("/", (request, response) => {
   response.send("test");
 });
 
-app.get("/users", async (request, response) => {
-  const query = "SELECT * FROM users ORDER BY name;";
+app.get("/artists", (request, response) => {
+  const query = "SELECT * FROM artists ORDER BY name;";
   connection.query(query, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -27,25 +27,24 @@ app.get("/users", async (request, response) => {
   });
 });
 
-app.get("/users/:id", async (request, response) => {
+app.get("/artists/:id", (request, response) => {
   const id = Number(request.params.id);
-  const query = "SELECT * FROM users WHERE id=?;";
+  const query = "SELECT * FROM artists WHERE id=?;";
   const values = [id];
 
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
     } else {
-      response.json(results);
+      response.json(results[0]);
     }
   });
 });
 
-app.post("/users", async (request, response) => {
-  const user = request.body;
-  const query =
-    "INSERT INTO users (name, mail, title, image) VALUES (?, ?, ?, ?)";
-  const values = [user.name, user.mail, user.title, user.image];
+app.post("/artists", async (request, response) => {
+  const artist = request.body;
+  const query = "INSERT INTO artists (name, mail, title, image) VALUES (?, ?, ?, ?)";
+  const values = [artist.name, artist.mail, artist.title, artist.image];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -55,11 +54,11 @@ app.post("/users", async (request, response) => {
   });
 });
 
-app.put("/users/:id", async (request, response) => {
+app.put("/artists/:id", async (request, response) => {
   const id = Number(request.params.id);
-  const user = request.body;
-  const query = "UPDATE users SET name=?, mail=?, title=?, image=? WHERE id=?;";
-  const values = [user.name, user.mail, user.title, user.image, id];
+  const artist = request.body;
+  const query = "UPDATE artists SET name=?, mail=?, title=?, image=? WHERE id=?;";
+  const values = [artist.name, artist.mail, artist.title, artist.image, id];
 
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -70,9 +69,9 @@ app.put("/users/:id", async (request, response) => {
   });
 });
 
-app.delete("/users/:id", async (request, response) => {
+app.delete("/artists/:id", async (request, response) => {
   const id = Number(request.params.id);
-  const query = "DELETE FROM users WHERE id=?;";
+  const query = "DELETE FROM artists WHERE id=?;";
   const values = [id];
 
   connection.query(query, values, (error, results, fields) => {
