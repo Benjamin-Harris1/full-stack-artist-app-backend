@@ -41,10 +41,10 @@ app.get("/artists/:id", (request, response) => {
   });
 });
 
-app.post("/artists", async (request, response) => {
+app.post("/artists", (request, response) => {
   const artist = request.body;
-  const query = "INSERT INTO artists (name, mail, title, image) VALUES (?, ?, ?, ?)";
-  const values = [artist.name, artist.mail, artist.title, artist.image];
+  const query = "INSERT INTO artists (name, career_start, image) VALUES (?, ?, ?)";
+  const values = [artist.name, artist.career_start, artist.image];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -54,11 +54,11 @@ app.post("/artists", async (request, response) => {
   });
 });
 
-app.put("/artists/:id", async (request, response) => {
-  const id = Number(request.params.id);
+app.put("/artists/:id", (request, response) => {
+  const id = request.params.id;
   const artist = request.body;
-  const query = "UPDATE artists SET name=?, mail=?, title=?, image=? WHERE id=?;";
-  const values = [artist.name, artist.mail, artist.title, artist.image, id];
+  const query = "UPDATE artists SET name=?, career_start=?, image=? WHERE id=?;";
+  const values = [artist.name, artist.career_start, artist.image, id];
 
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -69,8 +69,8 @@ app.put("/artists/:id", async (request, response) => {
   });
 });
 
-app.delete("/artists/:id", async (request, response) => {
-  const id = Number(request.params.id);
+app.delete("/artists/:id", (request, response) => {
+  const id = request.params.id;
   const query = "DELETE FROM artists WHERE id=?;";
   const values = [id];
 
