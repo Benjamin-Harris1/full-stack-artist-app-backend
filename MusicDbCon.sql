@@ -12,12 +12,12 @@ CREATE TABLE artists (
    image TEXT
 );
 
-DROP TABLE albums, tracks;
+DROP TABLE tracks, tracks_albums, tracks_artists;
 
 CREATE TABLE albums (
      id INT AUTO_INCREMENT PRIMARY KEY,
      artist_id INT NOT NULL,
-     title VARCHAR(256) NOT NULL ,
+     title VARCHAR(256) NOT NULL UNIQUE ,
      release_date VARCHAR(256),
      image TEXT
 );
@@ -26,7 +26,7 @@ CREATE TABLE tracks (
     id INT AUTO_INCREMENT PRIMARY KEY,
     album_id INT,
     artist_id INT,
-    title VARCHAR(256),
+    title VARCHAR(256) NOT NULL UNIQUE ,
     duration INT
 );
 
