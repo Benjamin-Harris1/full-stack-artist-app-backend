@@ -44,7 +44,7 @@ CREATE TABLE tracks_artists (
 );
 
 INSERT INTO artists (name, career_start)
-VALUES ("Taylor Swift","2006-01-01", "Imagine an image here");
+VALUES ("Taylor Swift","2006-01-01");
 
 INSERT INTO artists (name, career_start)
 VALUES
