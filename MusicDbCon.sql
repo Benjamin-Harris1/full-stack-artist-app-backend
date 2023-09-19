@@ -9,7 +9,6 @@ CREATE TABLE artists (
    id INT AUTO_INCREMENT PRIMARY KEY,
    name VARCHAR(256) UNIQUE NOT NULL,
    career_start varchar(256),
-   image TEXT
 );
 
 DROP TABLE tracks, tracks_albums, tracks_artists;
@@ -18,8 +17,7 @@ CREATE TABLE albums (
      id INT AUTO_INCREMENT PRIMARY KEY,
      artist_id INT NOT NULL,
      title VARCHAR(256) NOT NULL UNIQUE ,
-     release_date VARCHAR(256),
-     image TEXT
+     release_date VARCHAR(256)
 );
 
 CREATE TABLE tracks (
