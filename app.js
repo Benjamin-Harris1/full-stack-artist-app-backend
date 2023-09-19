@@ -43,8 +43,7 @@ app.get("/artists/:id", (request, response) => {
 
 app.post("/artists", (request, response) => {
   const artist = request.body;
-  const query =
-    "INSERT INTO artists (name, career_start, image) VALUES (?, ?, ?)";
+  const query = "INSERT INTO artists (name, career_start, image) VALUES (?, ?, ?)";
   const values = [artist.name, artist.career_start, artist.image];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -58,8 +57,7 @@ app.post("/artists", (request, response) => {
 app.put("/artists/:id", (request, response) => {
   const id = request.params.id;
   const artist = request.body;
-  const query =
-    "UPDATE artists SET name=?, career_start=?, image=? WHERE id=?;";
+  const query = "UPDATE artists SET name=?, career_start=?, image=? WHERE id=?;";
   const values = [artist.name, artist.career_start, artist.image, id];
 
   connection.query(query, values, (error, results, fields) => {
@@ -78,7 +76,7 @@ app.delete("/artists/:id", (request, response) => {
 });
 
 app.get("/albums", (request, response) => {
-  const query = "SELECT * FROM albums ORDER BY name;";
+  const query = "SELECT * FROM albums ORDER BY title;";
   connection.query(query, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -103,14 +101,8 @@ app.get("/albums", (request, response) => {
 
   app.post("/albums", (request, response) => {
     const album = request.body;
-    const query =
-      "INSERT INTO albums (artist_id, title, release_date, image) VALUES (?, ?, ?, ?)";
-    const values = [
-      album.artist_id,
-      album.name,
-      album.release_date,
-      album.image,
-    ];
+    const query = "INSERT INTO albums (artist_id, title, release_date, image) VALUES (?, ?, ?, ?)";
+    const values = [album.artist_id, album.name, album.release_date, album.image];
     connection.query(query, values, (error, results, fields) => {
       if (error) {
         console.log(error);
@@ -123,8 +115,7 @@ app.get("/albums", (request, response) => {
   app.put("/albums/:id", (request, response) => {
     const id = request.params.id;
     const artist = request.body;
-    const query =
-      "UPDATE albums SET aritst_id=?, name=?, release_date=?, image=? WHERE id=?;";
+    const query = "UPDATE albums SET aritst_id=?, name=?, release_date=?, image=? WHERE id=?;";
     const values = [artist.name, artist.career_start, artist.image, id];
 
     connection.query(query, values, (error, results, fields) => {
