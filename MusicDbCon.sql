@@ -48,19 +48,19 @@ VALUES ("Taylor Swift","2006-01-01", "Imagine an image here");
 
 INSERT INTO artists (name, career_start)
 VALUES
-    ("The Beatles", "1960", "exampleName1"),
-    ("Michael Jackson", "1964", "exampleName2"),
-    ("Elvis Presley", "1954", "exampleName3"),
-    ("Madonna", "1979", "exampleName4"),
-    ("Bob Dylan", "1961", "exampleName5"),
-    ("Beyoncé", "1997", "exampleName6"),
-    ("Prince", "1976", "exampleName7"),
-    ("David Bowie", "1963", "exampleName8"),
-    ("Whitney Houston", "1977", "exampleName9"),
-    ("Adele", "2006", "exampleName10"),
-    ("Queen", "1970", "exampleName11"),
-    ("Frank Sinatra", "1935", "exampleName12"),
-    ("Ella Fitzgerald", "1934", "exampleName13"),
-    ("Jay-Z", "1995", "exampleName14"),
-    ("Bob Marley", "1962", "exampleName15");
+    ("The Beatles", "1960"),
+    ("Michael Jackson", "1964"),
+    ("Elvis Presley", "1954"),
+    ("Madonna", "1979"),
+    ("Bob Dylan", "1961"),
+    ("Beyoncé", "1997"),
+    ("Prince", "1976"),
+    ("David Bowie", "1963"),
+    ("Whitney Houston", "1977"),
+    ("Adele", "2006"),
+    ("Queen", "1970"),
+    ("Frank Sinatra", "1935"),
+    ("Ella Fitzgerald", "1934"),
+    ("Jay-Z", "1995"),
+    ("Bob Marley", "1962");
 
