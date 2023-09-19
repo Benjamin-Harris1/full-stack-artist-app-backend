@@ -55,10 +55,10 @@ CREATE TABLE albums_artists (
     foreign key (artist_id) references artists(id)
 );
 
-INSERT INTO artists (name, career_start, image)
+INSERT INTO artists (name, career_start)
 VALUES ("Taylor Swift","2006-01-01", "Imagine an image here");
 
-INSERT INTO artists (name, career_start, image)
+INSERT INTO artists (name, career_start)
 VALUES
     ("The Beatles", "1960", "exampleName1"),
     ("Michael Jackson", "1964", "exampleName2"),
