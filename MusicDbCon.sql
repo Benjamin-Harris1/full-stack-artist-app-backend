@@ -4,26 +4,23 @@ CREATE DATABASE musicDb;
 -- navigate to musicDb
 USE musicDb;
 
+DROP TABLE tracks, tracks_albums, tracks_artists, artists;
 
 CREATE TABLE artists (
    id INT AUTO_INCREMENT PRIMARY KEY,
    name VARCHAR(256) UNIQUE NOT NULL,
-   career_start varchar(256),
+   career_start varchar(256)
 );
 
-DROP TABLE tracks, tracks_albums, tracks_artists;
 
 CREATE TABLE albums (
      id INT AUTO_INCREMENT PRIMARY KEY,
-     artist_id INT NOT NULL,
      title VARCHAR(256) NOT NULL UNIQUE ,
      release_date VARCHAR(256)
 );
 
 CREATE TABLE tracks (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    album_id INT,
-    artist_id INT,
     title VARCHAR(256) NOT NULL UNIQUE ,
     duration INT
 );
@@ -44,15 +41,6 @@ CREATE TABLE tracks_artists (
    PRIMARY KEY (track_id, artist_id),
    foreign key (track_id) references  tracks(id),
    foreign key (artist_id) references artists(id)
-);
-
--- associate album_id with artist_id for albums with multiple artists
-CREATE TABLE albums_artists (
-    album_id INT,
-    artist_id INT,
-    PRIMARY KEY (album_id, artist_id),
-    foreign key (album_id) references  albums(id),
-    foreign key (artist_id) references artists(id)
 );
 
 INSERT INTO artists (name, career_start, image)
