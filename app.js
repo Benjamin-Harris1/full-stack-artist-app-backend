@@ -84,54 +84,40 @@ app.get("/albums", (request, response) => {
       response.json(results);
     }
   });
+});
 
-  app.get("/albums/:id", (request, response) => {
-    const id = Number(request.params.id);
-    const query = "SELECT * FROM albums WHERE id=?;";
-    const values = [id];
+app.get("/albums/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const query = "SELECT * FROM albums WHERE id=?;";
+  const values = [id];
 
-    connection.query(query, values, (error, results, fields) => {
-      if (error) {
-        console.log(error);
-      } else {
-        response.json(results[0]);
-      }
-    });
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.json(results[0]);
+    }
   });
+});
 
-  app.post("/albums", (request, response) => {
-    const album = request.body;
-    const query = "INSERT INTO albums (artist_id, title, release_date, image) VALUES (?, ?, ?, ?)";
-    const values = [album.artist_id, album.name, album.release_date, album.image];
-    connection.query(query, values, (error, results, fields) => {
-      if (error) {
-        console.log(error);
-      } else {
-        response.json(results);
-      }
-    });
+app.post("/albums", (request, response) => {
+  const album = request.body;
+  const query = "INSERT INTO albums (artist_id, title, release_date, image) VALUES (?, ?, ?, ?)";
+  const values = [album.artist_id, album.name, album.release_date, album.image];
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.json(results);
+    }
   });
+});
 
-  app.put("/albums/:id", (request, response) => {
-    const id = request.params.id;
-    const artist = request.body;
-    const query = "UPDATE albums SET aritst_id=?, name=?, release_date=?, image=? WHERE id=?;";
-    const values = [artist.name, artist.career_start, artist.image, id];
-
-    connection.query(query, values, (error, results, fields) => {
-      if (error) {
-        console.log(error);
-      } else {
-        response.json(results);
-      }
-    });
-  });
-
-  app.delete("/albums/:id", (request, response) => {
-    const id = request.params.id;
-    const query = "DELETE FROM albums WHERE id=?;";
-    const values = [id];
-  });
+app.put("/albums/:id", (request, response) => {
+  const id = request.params.id;
+  const artist = request.body;
+  const query = "UPDATE albums SET aritst_id=?, name=?, release_date=?, image=? WHERE id=?;";
+  const values = [artist.name, artist.career_start, artist.image, id];
 
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -141,3 +127,17 @@ app.get("/albums", (request, response) => {
     }
   });
 });
+
+app.delete("/albums/:id", (request, response) => {
+  const id = request.params.id;
+  const query = "DELETE FROM albums WHERE id=?;";
+  const values = [id];
+});
+
+// connection.query(query, values, (error, results, fields) => {
+//   if (error) {
+//     console.log(error);
+//   } else {
+//     response.json(results);
+//   }
+// });
