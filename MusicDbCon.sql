@@ -64,3 +64,20 @@ VALUES
     ("Jay-Z", "1995"),
     ("Bob Marley", "1962");
 
+INSERT INTO albums (title, release_date)
+values
+("Sgt. Pepper's Lonely Hearts Club Band", "1967"),
+("Thriller", "1982"),
+("Elvis Presley", "1956"),
+("Like a Virgin", "1984"),
+("Highway 61 Revisited", "1965"),
+("Beyoncé", "2013"),
+("Purple Rain", "1984"),
+("The Rise and Fall of Ziggy Stardust and the Spiders from Mars", "1972"),
+("Whitney Houston", "1985"),
+("21", "2011"),
+("A Night at the Opera", "1975"),
+("Frank Sinatra (Self-titled)", "1956"),
+("Ella Fitzgerald (Self-titled)", "1950"),
+("Reasonable Doubt", "1996"),
+("Legend", "1984");
