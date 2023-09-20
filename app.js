@@ -75,6 +75,14 @@ app.delete("/artists/:id", (request, response) => {
   const id = request.params.id;
   const query = "DELETE FROM artists WHERE id=?;";
   const values = [id];
+
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.json(results);
+    }
+  });
 });
 
 // --------------------------------------- A L B U M S --------------------------------------------//
@@ -137,6 +145,14 @@ app.delete("/albums/:id", (request, response) => {
   const id = request.params.id;
   const query = "DELETE FROM albums WHERE id=?;";
   const values = [id];
+
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.json(results);
+    }
+  });
 });
 
 // --------------------------------------- T R A C K S --------------------------------------------//
@@ -184,6 +200,20 @@ app.put("/tracks/:id", (request, response) => {
   const track = request.body;
   const query = "UPDATE tracks SET title=?, duration=? WHERE id=?;";
   const values = [track.title, track.duration, id];
+
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.json(results);
+    }
+  });
+});
+
+app.delete("/tracks/:id", (request, response) => {
+  const id = request.params.id;
+  const query = "DELETE FROM tracks WHERE id=?;";
+  const values = [id];
 
   connection.query(query, values, (error, results, fields) => {
     if (error) {
