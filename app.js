@@ -134,6 +134,32 @@ app.delete("/albums/:id", (request, response) => {
   const values = [id];
 });
 
+// tracks route
+app.get("/tracks", (request, response) => {
+  const query = "SELECT * FROM tracks ORDER BY title;";
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.json(results);
+    }
+  });
+});
+
+app.get("/tracks/:id", (request, response) => {
+  const id = request.params.id;
+  const query = "SELECT * FROM tracks WHERE id=?";
+  const values = [id];
+
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.json(results);
+    }
+  });
+});
+
 // connection.query(query, values, (error, results, fields) => {
 //   if (error) {
 //     console.log(error);
