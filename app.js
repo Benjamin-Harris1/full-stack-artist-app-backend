@@ -161,6 +161,19 @@ app.get("/tracks/:id", (request, response) => {
   });
 });
 
+app.post("/tracks", (request, response) => {
+  const tracks = request.body;
+  const query = "INSERT INTO tracks (title, duration) VALUES (?, ?); ";
+  const values = [tracks.title, tracks.duration];
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.json(results);
+    }
+  });
+});
+
 // connection.query(query, values, (error, results, fields) => {
 //   if (error) {
 //     console.log(error);
