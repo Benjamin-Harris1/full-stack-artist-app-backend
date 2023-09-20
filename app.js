@@ -16,6 +16,8 @@ app.get("/", (request, response) => {
   response.send("test");
 });
 
+// --------------------------------------- A R T I S T S --------------------------------------------//
+
 app.get("/artists", (request, response) => {
   const query = "SELECT * FROM artists ORDER BY name;";
   connection.query(query, (error, results, fields) => {
@@ -57,8 +59,8 @@ app.post("/artists", (request, response) => {
 app.put("/artists/:id", (request, response) => {
   const id = request.params.id;
   const artist = request.body;
-  const query = "UPDATE artists SET name=?, career_start=?, image=? WHERE id=?;";
-  const values = [artist.name, artist.career_start, artist.image, id];
+  const query = "UPDATE artists SET name=?, career_start=? WHERE id=?;";
+  const values = [artist.name, artist.career_start, id];
 
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -74,6 +76,8 @@ app.delete("/artists/:id", (request, response) => {
   const query = "DELETE FROM artists WHERE id=?;";
   const values = [id];
 });
+
+// --------------------------------------- A L B U M S --------------------------------------------//
 
 app.get("/albums", (request, response) => {
   const query = "SELECT * FROM albums ORDER BY title;";
@@ -117,7 +121,7 @@ app.post("/albums", (request, response) => {
 app.put("/albums/:id", (request, response) => {
   const id = request.params.id;
   const artist = request.body;
-  const query = "UPDATE albums SET aritst_id=?, name=?, release_date=?, image=? WHERE id=?;";
+  const query = "UPDATE albums SET aritst_id=?, name=?, release_date=? WHERE id=?;";
   const values = [artist.name, artist.career_start, artist.image, id];
 
   connection.query(query, values, (error, results, fields) => {
@@ -135,7 +139,8 @@ app.delete("/albums/:id", (request, response) => {
   const values = [id];
 });
 
-// tracks route
+// --------------------------------------- T R A C K S --------------------------------------------//
+
 app.get("/tracks", (request, response) => {
   const query = "SELECT * FROM tracks ORDER BY title;";
   connection.query(query, (error, results, fields) => {
