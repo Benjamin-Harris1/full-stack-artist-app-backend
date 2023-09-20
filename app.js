@@ -120,9 +120,9 @@ app.post("/albums", (request, response) => {
 
 app.put("/albums/:id", (request, response) => {
   const id = request.params.id;
-  const artist = request.body;
-  const query = "UPDATE albums SET aritst_id=?, name=?, release_date=? WHERE id=?;";
-  const values = [artist.name, artist.career_start, artist.image, id];
+  const album = request.body;
+  const query = "UPDATE albums SET title=?, release_date=? WHERE id=?;";
+  const values = [album.title, album.release_date, id];
 
   connection.query(query, values, (error, results, fields) => {
     if (error) {
@@ -179,10 +179,17 @@ app.post("/tracks", (request, response) => {
   });
 });
 
-// connection.query(query, values, (error, results, fields) => {
-//   if (error) {
-//     console.log(error);
-//   } else {
-//     response.json(results);
-//   }
-// });
+app.put("/tracks/:id", (request, response) => {
+  const id = request.params.id;
+  const track = request.body;
+  const query = "UPDATE tracks SET title=?, duration=? WHERE id=?;";
+  const values = [track.title, track.duration, id];
+
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.json(results);
+    }
+  });
+});
