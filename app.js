@@ -100,10 +100,11 @@ app.get("/albums/:id", (request, response) => {
   });
 });
 
+// TÆNKER VI SKAL TILFØJE album.artist_id når vi har lavet vores krydstabeller
 app.post("/albums", (request, response) => {
   const album = request.body;
-  const query = "INSERT INTO albums (artist_id, title, release_date) VALUES (?, ?, ?);";
-  const values = [album.artist_id, album.name, album.release_date];
+  const query = "INSERT INTO albums (title, release_date) VALUES (?, ?);";
+  const values = [album.title, album.release_date];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -151,6 +152,19 @@ app.get("/tracks/:id", (request, response) => {
   const query = "SELECT * FROM tracks WHERE id=?";
   const values = [id];
 
+  connection.query(query, values, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.json(results);
+    }
+  });
+});
+
+app.post("/tracks", (request, response) => {
+  const tracks = request.body;
+  const query = "INSERT INTO tracks (title, duration) VALUES (?, ?); ";
+  const values = [tracks.title, tracks.duration];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
