@@ -44,7 +44,7 @@ CREATE TABLE tracks_artists (
 );
 
 INSERT INTO artists (name, career_start)
-VALUES ("Taylor Swift","2006-01-01");
+VALUES ("Taylor Swift","2006");
 
 INSERT INTO artists (name, career_start)
 VALUES
@@ -141,3 +141,20 @@ values
 ("No Woman, No Cry", "7:08"),
 ("One Love", "2:50"),
 ("Redemption Song", "3:48");
+
+INSERT INTO albums(title, release_date )
+values ("Sgt. Pepper's Lonely Hearts Club Band", "1967"),
+("Thriller", "1982"),
+("Elvis Presley", "1956"),
+("Like a Virgin", "1984"),
+("Highway 61 Revisited", "1965"),
+("Beyoncé", "2013"),
+("Purple Rain", "1984"),
+("The Rise and Fall of Ziggy Stardust and the Spiders from Mars", "1972"),
+("Whitney Houston", "1985"),
+("21", "2011"),
+("A Night at the Opera", "1975"),
+("Frank Sinatra (Self-titled)", "1956"),
+("Ella Fitzgerald (Self-titled)", "1950"),
+("Reasonable Doubt", "1996"),
+("Legend", "1984");
