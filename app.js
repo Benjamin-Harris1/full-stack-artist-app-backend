@@ -100,10 +100,11 @@ app.get("/albums/:id", (request, response) => {
   });
 });
 
+// TÆNKER VI SKAL TILFØJE album.artist_id når vi har lavet vores krydstabeller
 app.post("/albums", (request, response) => {
   const album = request.body;
-  const query = "INSERT INTO albums (artist_id, title, release_date) VALUES (?, ?, ?);";
-  const values = [album.artist_id, album.name, album.release_date];
+  const query = "INSERT INTO albums (title, release_date) VALUES (?, ?);";
+  const values = [album.title, album.release_date];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
