@@ -43,8 +43,8 @@ app.get("/artists/:id", (request, response) => {
 
 app.post("/artists", (request, response) => {
   const artist = request.body;
-  const query = "INSERT INTO artists (name, career_start, image) VALUES (?, ?, ?)";
-  const values = [artist.name, artist.career_start, artist.image];
+  const query = "INSERT INTO artists (name, career_start) VALUES (?, ?);";
+  const values = [artist.name, artist.career_start];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
@@ -102,8 +102,8 @@ app.get("/albums/:id", (request, response) => {
 
 app.post("/albums", (request, response) => {
   const album = request.body;
-  const query = "INSERT INTO albums (artist_id, title, release_date, image) VALUES (?, ?, ?, ?)";
-  const values = [album.artist_id, album.name, album.release_date, album.image];
+  const query = "INSERT INTO albums (artist_id, title, release_date) VALUES (?, ?, ?);";
+  const values = [album.artist_id, album.name, album.release_date];
   connection.query(query, values, (error, results, fields) => {
     if (error) {
       console.log(error);
