@@ -3,8 +3,6 @@ import { Router } from "express";
 
 const tracksRouter = Router();
 
-// SKAL LAVES TIL mysql/promises SYNTAX LIGESOM DER ER GJORT I ARTISTS.JS
-
 tracksRouter.get("/", async (request, response) => {
   const query = "SELECT * FROM tracks ORDER BY title;";
   const [results] = await dbconfig.execute(query);
