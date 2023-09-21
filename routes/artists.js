@@ -4,14 +4,19 @@ import { Router } from "express";
 const artistsRouter = Router();
 
 artistsRouter.get("/", async (request, response) => {
+  console.log("doing an artist");
+
   const query = /*sql*/ `
-            SELECT artists.*,
-                    artists.name AS artistName,
-                    artists.id AS artistId
-            FROM tracks
-            INNER JOIN tracks_artists ON tracks.id = tracks_artists.track_id
-            INNER JOIN artists ON tracks_artists.artist_id = artists.id;
+    SELECT id, name, career_start FROM artists
   `;
+  // const query = /*sql*/ `
+  //     SELECT artists.*,
+  //             artists.name AS artistName,
+  //             artists.id AS artistId
+  //     FROM tracks
+  //     INNER JOIN tracks_artists ON tracks.id = tracks_artists.track_id
+  //     INNER JOIN artists ON tracks_artists.artist_id = artists.id;
+  // `;
   const [results] = await dbconfig.execute(query);
 
   response.json(results);

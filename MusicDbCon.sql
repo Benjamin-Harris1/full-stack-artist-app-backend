@@ -171,6 +171,9 @@ VALUES
     (15, 15);
 
 
+SELECT id, name, career_start FROM artists;
+
+
 SELECT tracks.*,
         artists.name AS artistName,
         artists.id AS artistId
