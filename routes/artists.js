@@ -5,8 +5,6 @@ const artistsRouter = Router();
 
 // gets a list of all artists in db, as {id, name, career_start}
 artistsRouter.get("/", async (request, response) => {
-  console.log("doing an artist");
-
   const query = "SELECT id, name, career_start FROM artists;";
   const [results] = await dbconfig.execute(query);
   response.json(results);
@@ -19,7 +17,6 @@ artistsRouter.get("/", async (request, response) => {
   //     INNER JOIN tracks_artists ON tracks.id = tracks_artists.track_id
   //     INNER JOIN artists ON tracks_artists.artist_id = artists.id;
   // `;
-  
 });
 
 // gets a specific artist by their id property
