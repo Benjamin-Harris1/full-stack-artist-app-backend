@@ -36,18 +36,12 @@ tracksRouter.put("/:id", async (request, response) => {
   response.json(results);
 });
 
-tracksRouter.delete("/:id", (request, response) => {
+tracksRouter.delete("/:id", async (request, response) => {
   const id = request.params.id;
   const query = "DELETE FROM tracks WHERE id=?;";
   const values = [id];
-
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+  const [results] = await dbconfig.execute(query, values);
+  response.json(results);
 });
 
 export default tracksRouter;
