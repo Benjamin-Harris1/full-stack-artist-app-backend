@@ -3,6 +3,7 @@ import { Router } from "express";
 
 const artistsRouter = Router();
 
+// gets a list of all artists in db, as {id, name, career_start}
 artistsRouter.get("/", async (request, response) => {
   console.log("doing an artist");
 
@@ -22,6 +23,7 @@ artistsRouter.get("/", async (request, response) => {
   response.json(results);
 });
 
+// gets a specific artist by their id property
 artistsRouter.get("/:id", async (request, response) => {
   const id = Number(request.params.id);
   const query = /*sql*/ `
@@ -32,6 +34,7 @@ artistsRouter.get("/:id", async (request, response) => {
   response.json(results);
 });
 
+// posts an artist, format: {name:string, career_start:int}
 artistsRouter.post("/", async (request, response) => {
   const artist = request.body;
   const query = /*sql*/ `
