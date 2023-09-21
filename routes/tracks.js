@@ -19,7 +19,7 @@ tracksRouter.get("/:id", async (request, response) => {
 
 tracksRouter.post("/", async (request, response) => {
   const tracks = request.body;
-  const query = "INSERT INTO tracks (title, duration) VALUES (?, ?); ";
+  const query = "INSERT INTO tracks (title, duration) VALUES (?, ?);";
   const values = [tracks.title, tracks.duration];
   const [results] = await dbconfig.execute(query, values);
   response.json(results);
