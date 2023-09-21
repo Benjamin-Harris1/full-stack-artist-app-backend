@@ -3,73 +3,48 @@ import { Router } from "express";
 
 const tracksRouter = Router();
 
-// SKAL LAVES TIL mysql/promises SYNTAX LIGESOM DER ER GJORT I ARTISTS.JS
-
-tracksRouter.get("/", (request, response) => {
+// Gets a list of all tracks in db, format: {id, title, duration}
+tracksRouter.get("/", async (request, response) => {
   const query = "SELECT * FROM tracks ORDER BY title;";
-  connection.query(query, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+  const [results] = await dbconfig.execute(query);
+  response.json(results);
 });
 
-tracksRouter.get("/:id", (request, response) => {
+// Gets a specific track by its ID property, format: {id, title, duration}
+tracksRouter.get("/:id", async (request, response) => {
   const id = request.params.id;
-  const query = "SELECT * FROM tracks WHERE id=?";
   const values = [id];
-
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+  const query = "SELECT * FROM tracks WHERE id=?";
+  const [results] = await dbconfig.execute(query, values);
+  response.json(results);
 });
 
-tracksRouter.post("/", (request, response) => {
+// Creates a new track with the inserted values, format: {id, title, duration}
+tracksRouter.post("/", async (request, response) => {
   const tracks = request.body;
-  const query = "INSERT INTO tracks (title, duration) VALUES (?, ?); ";
+  const query = "INSERT INTO tracks (title, duration) VALUES (?, ?);";
   const values = [tracks.title, tracks.duration];
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+  const [results] = await dbconfig.execute(query, values);
+  response.json(results);
 });
 
-tracksRouter.put("/:id", (request, response) => {
+// Updates a track, format: {id, title, duration}
+tracksRouter.put("/:id", async (request, response) => {
   const id = request.params.id;
   const track = request.body;
   const query = "UPDATE tracks SET title=?, duration=? WHERE id=?;";
   const values = [track.title, track.duration, id];
-
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+  const [results] = await dbconfig.execute(query, values);
+  response.json(results);
 });
 
-tracksRouter.delete("/:id", (request, response) => {
+// Deletes a track with the specific ID
+tracksRouter.delete("/:id", async (request, response) => {
   const id = request.params.id;
   const query = "DELETE FROM tracks WHERE id=?;";
   const values = [id];
-
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+  const [results] = await dbconfig.execute(query, values);
+  response.json(results);
 });
 
 export default tracksRouter;
