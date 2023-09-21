@@ -5,45 +5,51 @@ const albumsRouter = Router();
 
 // SKAL LAVES TIL mysql/promises SYNTAX LIGESOM DER ER GJORT I ARTISTS.JS
 
-albumsRouter.get("/", (request, response) => {
+albumsRouter.get("/", async (request, response) => {
   const query = "SELECT * FROM albums ORDER BY title;";
-  connection.query(query, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+
+  const [results] = await dbconfig.execute(query);
+  response.json(results);
 });
 
-albumsRouter.get("/:id", (request, response) => {
+albumsRouter.get("/:id", async (request, response) => {
   const id = Number(request.params.id);
   const query = "SELECT * FROM albums WHERE id=?;";
   const values = [id];
 
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results[0]);
-    }
-  });
+  const [results] = await dbconfig.execute(query, values);
+  response.json(results);
 });
 
-// TÆNKER VI SKAL TILFØJE album.artist_id når vi har lavet vores krydstabeller
-albumsRouter.post("/", (request, response) => {
+// posts an album and associates it with an artist format: {title:string, release_date:string, artist_id:int}
+albumsRouter.post("/", async (request, response) => {
+  console.log("album post");
   const album = request.body;
-  const query = "INSERT INTO albums (title, release_date) VALUES (?, ?);";
-  const values = [album.title, album.release_date];
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+  const albumQuery = /*SQL*/ `
+    INSERT INTO albums (title, release_date)
+    VALUES (?, ?);`;
+  const albumValues = [album.title, album.release_date];
+  const [albumResult] = await dbconfig.execute(albumQuery, albumValues);
+
+  const albums_artistsQuery = /*SQL*/ `
+  INSERT INTO albums_artists (album_id, artist_id)
+  VALUES (?, ?);`;
+  const albums_artistsValues = [albumResult.insertId, album.artist_id];
+  const [albums_artistsResult] = await dbconfig.execute(albums_artistsQuery, albums_artistsValues);
+
+  const query = /*SQL*/ `
+  SELECT albums.*, artists.name
+  FROM albums
+  INNER JOIN albums_artists on albums.id = albums_artists.album_id
+  INNER JOIN artists on albums_artists.artist_id = artists.id
+  WHERE album_id = ?`;
+  const values = [albumResult.insertId];
+  const [result] = await dbconfig.execute(query, values);
+
+  response.json(result[0]);
 });
 
+// s
 albumsRouter.put("/:id", (request, response) => {
   const id = request.params.id;
   const album = request.body;
