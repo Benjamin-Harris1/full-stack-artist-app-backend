@@ -4,6 +4,9 @@ CREATE DATABASE musicDb;
 -- navigate to musicDb
 USE musicDb;
 
+-- dropping all tables for updating
+DROP TABLE  artists, albums, tracks, tracks_artists, tracks_albums,albums_artists;
+
 -- Create the artists table
 CREATE TABLE artists (
    id INT AUTO_INCREMENT PRIMARY KEY,
@@ -52,62 +55,6 @@ CREATE TABLE artists_albums (
     FOREIGN KEY (artist_id) REFERENCES artists(id),
     FOREIGN KEY (album_id) REFERENCES albums(id)
 );
-
-
--- Insert data into the linking tables tracks_albums and tracks_artists
-INSERT INTO tracks_albums (track_id, album_id)
-VALUES
-    (1, 1),
-    (2, 2),
-    (3, 3),
-    (4, 4),
-    (5, 5),
-    (6, 6),
-    (7, 7),
-    (8, 8),
-    (9, 9),
-    (10, 10),
-    (11, 11),
-    (12, 12),
-    (13, 13),
-    (14, 14),
-    (15, 15);
-
-INSERT INTO tracks_artists (track_id, artist_id)
-VALUES
-    (1, 1),
-    (2, 2),
-    (3, 3),
-    (4, 4),
-    (5, 5),
-    (6, 6),
-    (7, 7),
-    (8, 8),
-    (9, 9),
-    (10, 10),
-    (11, 11),
-    (12, 12),
-    (13, 13),
-    (14, 14),
-    (15, 15);
-
-INSERT INTO artists_albums (artist_id, album_id)
-VALUES
-    (1, 1),
-    (2, 2),
-    (3, 3),
-    (4, 4),
-    (5, 5),
-    (6, 6),
-    (7, 7),
-    (8, 8),
-    (9, 9),
-    (10, 10),
-    (11, 11),
-    (12, 12),
-    (13, 13),
-    (14, 14),
-    (15, 15);
 
 
 INSERT INTO artists (name, career_start)
@@ -168,9 +115,65 @@ VALUES
     ("No Woman, No Cry", "3:57");
 
 
-       SELECT tracks.*,
-                    artists.name AS artistName,
-                    artists.id AS artistId
-            FROM tracks
-            INNER JOIN tracks_artists ON tracks.id = tracks_artists.track_id
-            INNER JOIN artists ON tracks_artists.artist_id = artists.id;
+-- Insert data into the linking tables tracks_albums and tracks_artists
+INSERT INTO tracks_albums (track_id, album_id)
+VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+    (6, 6),
+    (7, 7),
+    (8, 8),
+    (9, 9),
+    (10, 10),
+    (11, 11),
+    (12, 12),
+    (13, 13),
+    (14, 14),
+    (15, 15);
+
+INSERT INTO tracks_artists (track_id, artist_id)
+VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+    (6, 6),
+    (7, 7),
+    (8, 8),
+    (9, 9),
+    (10, 10),
+    (11, 11),
+    (12, 12),
+    (13, 13),
+    (14, 14),
+    (15, 15);
+
+INSERT INTO artists_albums (artist_id, album_id)
+VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+    (6, 6),
+    (7, 7),
+    (8, 8),
+    (9, 9),
+    (10, 10),
+    (11, 11),
+    (12, 12),
+    (13, 13),
+    (14, 14),
+    (15, 15);
+
+
+SELECT tracks.*,
+        artists.name AS artistName,
+        artists.id AS artistId
+FROM tracks
+INNER JOIN tracks_artists ON tracks.id = tracks_artists.track_id
+INNER JOIN artists ON tracks_artists.artist_id = artists.id;
