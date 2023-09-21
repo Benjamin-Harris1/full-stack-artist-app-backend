@@ -5,15 +5,10 @@ const tracksRouter = Router();
 
 // SKAL LAVES TIL mysql/promises SYNTAX LIGESOM DER ER GJORT I ARTISTS.JS
 
-tracksRouter.get("/", (request, response) => {
-  const query = "SELECT * FROM tracks ORDER BY title;";
-  connection.query(query, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+tracksRouter.get("/", async (request, response) => {
+  const query = /*sql*/ `SELECT * FROM tracks ORDER BY title;`;
+  const [results] = await dbconfig.execute(query);
+  response.json(results);
 });
 
 tracksRouter.get("/:id", (request, response) => {
