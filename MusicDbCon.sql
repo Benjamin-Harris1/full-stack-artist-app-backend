@@ -186,12 +186,18 @@ INNER JOIN artists ON tracks_artists.artist_id = artists.id;
 INSERT INTO albums (title, release_date) VALUES ("Testb", "later");
 INSERT INTO albums_artists VALUES (LAST_INSERT_ID(), 7);
 
-SELECT albums.*, artists.name
-FROM albums
-INNER JOIN albums_artists on albums.id = albums_artists.album_id
-INNER JOIN artists on albums_artists.artist_id = artists.id
-WHERE album_id = 37
+SELECT tracks.title as trackTitle, albums.title as albumTitle, artists.name as artistTitle
+FROM tracks
+INNER JOIN tracks_albums ON tracks.id = tracks_albums.track_id
+INNER JOIN albums ON tracks_albums.album_id = albums.id
+INNER JOIN tracks_artists ON tracks.id = tracks_artists.track_id
+INNER JOIN artists ON tracks_artists.artist_id = artists.id
+WHERE tracks.id = 4;
 
+
+
+INSERT INTO tracks_artists (track_id, artist_id)
+VALUES (5, 7)
 
 
 

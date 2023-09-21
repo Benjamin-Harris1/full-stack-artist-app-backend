@@ -49,34 +49,33 @@ albumsRouter.post("/", async (request, response) => {
   response.json(result[0]);
 });
 
-// s
-albumsRouter.put("/:id", (request, response) => {
+// updates an album by id given,
+albumsRouter.put("/:id", async (request, response) => {
   const id = request.params.id;
   const album = request.body;
   const query = "UPDATE albums SET title=?, release_date=? WHERE id=?;";
   const values = [album.title, album.release_date, id];
 
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+  const [result] = await dbconfig.execute(query, values);
+
+  response.json(result);
 });
 
-albumsRouter.delete("/:id", (request, response) => {
+// deletetes an album and associated references in albums_artists by id given
+albumsRouter.delete("/:id", async (request, response) => {
   const id = request.params.id;
-  const query = "DELETE FROM albums WHERE id=?;";
   const values = [id];
 
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+  const deleteAssociationQuery = "DELETE FROM albums_artists WHERE album_id = ?";
+  await dbconfig.execute(deleteAssociationQuery, values);
+
+  const query = "DELETE FROM albums WHERE id=?;";
+
+  const [result] = await dbconfig.execute(query, values);
+
+  response.json(result);
 });
+
+// missing: path for adding album artist association in junction table
 
 export default albumsRouter;
