@@ -3,7 +3,7 @@ import { Router } from "express";
 
 const artistsRouter = Router();
 
-// gets a list of all artists in db, as {id, name, career_start}
+// Gets a list of all artists in db, as {id, name, career_start}
 artistsRouter.get("/", async (request, response) => {
   const query = "SELECT id, name, career_start FROM artists;";
   const [results] = await dbconfig.execute(query);
@@ -19,7 +19,7 @@ artistsRouter.get("/", async (request, response) => {
   // `;
 });
 
-// gets a specific artist by their id property
+// Gets a specific artist by their id property
 artistsRouter.get("/:id", async (request, response) => {
   const id = Number(request.params.id);
   const query = "SELECT * FROM artists WHERE id=?;";
@@ -28,7 +28,7 @@ artistsRouter.get("/:id", async (request, response) => {
   response.json(results);
 });
 
-// posts an artist, format: {name:string, career_start:int}
+// Posts an artist, format: {name:string, career_start: int}
 artistsRouter.post("/", async (request, response) => {
   const artist = request.body;
   const query = "INSERT INTO artists (name, career_start) VALUES (?, ?);";
@@ -37,6 +37,7 @@ artistsRouter.post("/", async (request, response) => {
   response.json(results);
 });
 
+// Updates an artists, format: {name: string, career_start: int}
 artistsRouter.put("/:id", async (request, response) => {
   const id = request.params.id;
   const artist = request.body;
@@ -46,6 +47,7 @@ artistsRouter.put("/:id", async (request, response) => {
   response.json(results);
 });
 
+// Deletes an artist with the specific ID
 artistsRouter.delete("/:id", async (request, response) => {
   const id = request.params.id;
   const query = "DELETE FROM artists WHERE id=?;";
