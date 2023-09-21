@@ -5,8 +5,8 @@ CREATE DATABASE musicDb;
 USE musicDb;
 
 -- dropping all tables for updating
-DROP TABLE  artists, albums, tracks, tracks_artists, tracks_albums,albums_artists;
-
+DROP TABLE artists, albums, tracks, tracks_artists, tracks_albums,albums_artists;
+DROP TABLE artists_albums;
 -- Create the artists table
 CREATE TABLE artists (
    id INT AUTO_INCREMENT PRIMARY KEY,
@@ -48,12 +48,12 @@ CREATE TABLE tracks_artists (
     FOREIGN KEY (artist_id) REFERENCES artists(id)
 );
 
-CREATE TABLE artists_albums (
-    artist_id INT,
+CREATE TABLE albums_artists (
     album_id INT,
-    PRIMARY KEY (artist_id, album_id),
-    FOREIGN KEY (artist_id) REFERENCES artists(id),
-    FOREIGN KEY (album_id) REFERENCES albums(id)
+    artist_id INT,
+    PRIMARY KEY ( album_id,artist_id),
+    FOREIGN KEY (album_id) REFERENCES albums(id),
+    FOREIGN KEY (artist_id) REFERENCES artists(id)
 );
 
 
@@ -152,7 +152,7 @@ VALUES
     (14, 14),
     (15, 15);
 
-INSERT INTO artists_albums (artist_id, album_id)
+INSERT INTO albums_artists (album_id,artist_id )
 VALUES
     (1, 1),
     (2, 2),
