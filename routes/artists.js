@@ -3,7 +3,7 @@ import { Router } from "express";
 
 const artistsRouter = Router();
 
-// Gets a list of all artists in db, as {id, name, career_start}
+// Gets a list of all artists in db, format: {id, name, career_start}
 artistsRouter.get("/", async (request, response) => {
   const query = "SELECT id, name, career_start FROM artists;";
   const [results] = await dbconfig.execute(query);
@@ -28,7 +28,7 @@ artistsRouter.get("/:id", async (request, response) => {
   response.json(results);
 });
 
-// Posts an artist, format: {name:string, career_start: int}
+// Creates an artist, format: {name:string, career_start: int}
 artistsRouter.post("/", async (request, response) => {
   const artist = request.body;
   const query = "INSERT INTO artists (name, career_start) VALUES (?, ?);";
