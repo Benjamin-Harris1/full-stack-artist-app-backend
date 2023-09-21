@@ -11,18 +11,12 @@ tracksRouter.get("/", async (request, response) => {
   response.json(results);
 });
 
-tracksRouter.get("/:id", (request, response) => {
+tracksRouter.get("/:id", async (request, response) => {
   const id = request.params.id;
-  const query = "SELECT * FROM tracks WHERE id=?";
   const values = [id];
-
-  connection.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+  const query = "SELECT * FROM tracks WHERE id=?";
+  const [results] = await dbconfig.execute(query, values);
+  response.json(results);
 });
 
 tracksRouter.post("/", (request, response) => {
