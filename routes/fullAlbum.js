@@ -3,24 +3,21 @@ import { dbconfig } from "../database.js";
 
 const fullAlbumRouter = Router();
 
-/*  inserts an artist, an album and a track and associates them in junction tables
-     Format: {title:string, release_date:string, name:string, career_start:string}
-    Planned*/
 fullAlbumRouter.post("/", async (request, response) => {
-  const body = request.body;
+  const album = request.body;
 
   const albumQuery = /*SQL*/ `
   INSERT INTO albums (title, release_date)
   VALUES (?, ?);`;
-  const albumValues = [body.album_title, body.album_release_date];
+  const albumValues = [album.title, album.release_date];
   const [albumResult] = await dbconfig.execute(albumQuery, albumValues);
 
   const artistQuery = "INSERT INTO artists (name, career_start) VALUES (?, ?);";
-  const artistValues = [body.artist_name, body.artist_career_start];
+  const artistValues = [artist.name, artist.career_start];
   const [artistResults] = await dbconfig.execute(artistQuery, artistValues);
 
   const tracksQuery = "INSERT INTO tracks (title, duration) VALUES (?, ?);";
-  const tracksValues = [body.track_title, body.track_duration];
+  const tracksValues = [tracks.title, tracks.duration];
   const [tracksResults] = await dbconfig.execute(tracksQuery, tracksValues);
 
   const albums_artistsQuery = /*SQL*/ `
@@ -47,6 +44,24 @@ fullAlbumRouter.post("/", async (request, response) => {
   const [result] = await dbconfig.execute(query, values);
 
   response.json(result[0]);
+});
+
+fullAlbumRouter.get("/search", (request, response) => {
+  const query = request.query.q.toLowerCase();
+  const queryString = /*sql*/ `
+    SELECT * FROM artists WHERE name LIKE ?
+    UNION
+    SELECT * FROM albums WHERE title LIKE ?
+    UNION
+    SELECT * FROM tracks WHERE title LIKE ?;`;
+  const values = [`%${query}%`, `%${query}%`, `%${query}%`];
+  dbConnection.query(queryString, values, (error, results) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.json(results);
+    }
+  });
 });
 
 export default fullAlbumRouter;
