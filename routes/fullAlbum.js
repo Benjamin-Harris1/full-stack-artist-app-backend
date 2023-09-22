@@ -4,10 +4,12 @@ import { dbconfig } from "../database.js";
 const fullAlbumRouter = Router();
 
 /*  inserts an artist, an album and a track and associates them in junction tables
-     Format: {album_title:string, album_release_date:string, artist_name:string, artist_career_start:string, track_title:string, track_duration:int}
-    Planned*/
+     format: {album_title:string, album_release_date:string, artist_name:string, artist_career_start:string, track_title:string, track_duration:int}
+    Planned format:{album_title:string, album_release_date:string, artist_name:string, artist_career_start:string, tracks_title:[string], tracks_duration:[int]}*/
 fullAlbumRouter.post("/", async (request, response) => {
   const body = request.body;
+  console.log(`starting a full post tracks_title: ${body.tracks_title}`);
+  let trackID;
 
   const albumQuery = /*SQL*/ `
   INSERT INTO albums (title, release_date)
@@ -19,27 +21,32 @@ fullAlbumRouter.post("/", async (request, response) => {
   const artistValues = [body.artist_name, body.artist_career_start];
   const [artistResult] = await dbconfig.execute(artistQuery, artistValues);
 
-  const tracksQuery = "INSERT INTO tracks (title, duration) VALUES (?, ?);";
-  const tracksValues = [body.track_title, body.track_duration];
-  const [tracksResult] = await dbconfig.execute(tracksQuery, tracksValues);
-
   const albums_artistsQuery = /*SQL*/ `
   INSERT INTO albums_artists (album_id, artist_id)
   VALUES (?, ?);`;
   const albums_artistsValues = [albumResult.insertId, artistResult.insertId];
   const [albums_artistsResult] = await dbconfig.execute(albums_artistsQuery, albums_artistsValues);
+  for (let i in body.tracks_title) {
+    console.log(`attempting to create track ${i} with ${body.tracks_title[i]} and ${body.tracks_duration[i]}`);
 
-  const tracks_albumsQuery = /*SQL*/ `
-  INSERT INTO tracks_albums (track_id, album_id)
-  VALUES (?, ?);`;
-  const tracks_albumsValues = [tracksResult.insertId, albumResult.insertId];
-  const [tracks_albumsResult] = await dbconfig.execute(tracks_albumsQuery, tracks_albumsValues);
+    const tracksQuery = "INSERT INTO tracks (title, duration) VALUES (?, ?);";
+    const tracksValues = [body.tracks_title[i], body.tracks_duration[i]];
+    const [tracksResult] = await dbconfig.execute(tracksQuery, tracksValues);
 
-  const tracks_artistsQuery = /*SQL*/ `
-  INSERT INTO tracks_artists (track_id, artist_id)
-  VALUES (?, ?);`;
-  const tracks_artistsValues = [tracksResult.insertId, artistResult.insertId];
-  const [tracks_artistsResult] = await dbconfig.execute(tracks_artistsQuery, tracks_artistsValues);
+    const tracks_artistsQuery = /*SQL*/ `
+    INSERT INTO tracks_artists (track_id, artist_id)
+    VALUES (?, ?);`;
+    const tracks_artistsValues = [tracksResult.insertId, artistResult.insertId];
+    const [tracks_artistsResult] = await dbconfig.execute(tracks_artistsQuery, tracks_artistsValues);
+
+    const tracks_albumsQuery = /*SQL*/ `
+    INSERT INTO tracks_albums (track_id, album_id)
+    VALUES (?, ?);`;
+    const tracks_albumsValues = [tracksResult.insertId, albumResult.insertId];
+    const [tracks_albumsResult] = await dbconfig.execute(tracks_albumsQuery, tracks_albumsValues);
+    trackID = tracksResult.insertId;
+  }
+
   const query = /*SQL*/ `
  SELECT tracks.title as trackTitle, albums.title as albumTitle, artists.name as artistTitle
   FROM tracks
@@ -48,15 +55,17 @@ fullAlbumRouter.post("/", async (request, response) => {
   INNER JOIN tracks_artists ON tracks.id = tracks_artists.track_id
   INNER JOIN artists ON tracks_artists.artist_id = artists.id
   WHERE tracks.id = ?;`;
-  const values = [tracksResult.insertId];
+  console.log(`TrackID = ${trackID}`);
+  const values = [trackID];
   const [result] = await dbconfig.execute(query, values);
 
-  response.json(result[0]);
+  response.json(result);
 });
 
 fullAlbumRouter.get("/search", async (request, response) => {
   const query = request.query.q.toLowerCase();
   const queryString = /*sql*/ `
+<<<<<<< Updated upstream
 
 SELECT title, release_date, NULL AS name, NULL AS career_start, NULL AS duration
 FROM albums WHERE title LIKE ?
@@ -70,6 +79,22 @@ FROM tracks WHERE title LIKE ?;`;
   const values = [`%${query}%`, `%${query}%`, `%${query}%`];
   const [results] = await dbconfig.execute(queryString, values);
   response.json(results);
+=======
+    SELECT * FROM artists WHERE name LIKE ?
+    UNION
+    SELECT * FROM albums WHERE title LIKE ?
+    UNION
+    SELECT * FROM tracks WHERE title LIKE ?;`;
+  const values = [`%${query}%`, `%${query}%`, `%${query}%`];
+  dbConnection.query(queryString, values, (error, results) => {
+    if (error) {
+      console.log(error);
+      response.status(500).json({ error: "Internal server error" });
+    } else {
+      response.json(results);
+    }
+  });
+>>>>>>> Stashed changes
 });
 
 export default fullAlbumRouter;
