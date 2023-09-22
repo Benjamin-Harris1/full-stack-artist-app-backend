@@ -42,16 +42,16 @@ tracksRouter.post("/", async (request, response) => {
 
   const query = /*SQL*/ `
  SELECT tracks.title as trackTitle, albums.title as albumTitle, artists.name as artistTitle
-FROM tracks
-INNER JOIN tracks_albums ON tracks.id = tracks_albums.track_id
-INNER JOIN albums ON tracks_albums.album_id = albums.id
-INNER JOIN tracks_artists ON tracks.id = tracks_artists.track_id
-INNER JOIN artists ON tracks_artists.artist_id = artists.id
-WHERE tracks.id = ?;`;
+  FROM tracks
+  INNER JOIN tracks_albums ON tracks.id = tracks_albums.track_id
+  INNER JOIN albums ON tracks_albums.album_id = albums.id
+  INNER JOIN tracks_artists ON tracks.id = tracks_artists.track_id
+  INNER JOIN artists ON tracks_artists.artist_id = artists.id
+  WHERE tracks.id = ?;`;
   const values = [tracksResults.insertId];
   const [result] = await dbconfig.execute(query, values);
 
-  response.json(result);
+  response.json(result[0]);
 });
 
 // Updates a track, format: {id, title, duration}
