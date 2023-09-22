@@ -57,11 +57,16 @@ fullAlbumRouter.post("/", async (request, response) => {
 fullAlbumRouter.get("/search", async (request, response) => {
   const query = request.query.q.toLowerCase();
   const queryString = /*sql*/ `
-    SELECT * FROM artists WHERE name LIKE ?
-    UNION
-    SELECT * FROM albums WHERE title LIKE ?
-    UNION
-    SELECT * FROM tracks WHERE title LIKE ?;`;
+
+SELECT title, release_date, NULL AS name, NULL AS career_start, NULL AS duration
+FROM albums WHERE title LIKE ?
+UNION
+SELECT NULL AS title, NULL AS release_date, name, career_start, NULL AS duration
+FROM artists WHERE name LIKE ?
+UNION
+SELECT title, NULL AS release_date, NULL AS name, NULL AS career_start, duration
+FROM tracks WHERE title LIKE ?;`;
+
   const values = [`%${query}%`, `%${query}%`, `%${query}%`];
   const [results] = await dbconfig.execute(queryString, values);
   response.json(results);
