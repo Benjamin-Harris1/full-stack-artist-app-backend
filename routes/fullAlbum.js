@@ -65,7 +65,6 @@ fullAlbumRouter.post("/", async (request, response) => {
 fullAlbumRouter.get("/search", async (request, response) => {
   const query = request.query.q.toLowerCase();
   const queryString = /*sql*/ `
-<<<<<<< Updated upstream
 
 SELECT title, release_date, NULL AS name, NULL AS career_start, NULL AS duration
 FROM albums WHERE title LIKE ?
@@ -79,22 +78,6 @@ FROM tracks WHERE title LIKE ?;`;
   const values = [`%${query}%`, `%${query}%`, `%${query}%`];
   const [results] = await dbconfig.execute(queryString, values);
   response.json(results);
-=======
-    SELECT * FROM artists WHERE name LIKE ?
-    UNION
-    SELECT * FROM albums WHERE title LIKE ?
-    UNION
-    SELECT * FROM tracks WHERE title LIKE ?;`;
-  const values = [`%${query}%`, `%${query}%`, `%${query}%`];
-  dbConnection.query(queryString, values, (error, results) => {
-    if (error) {
-      console.log(error);
-      response.status(500).json({ error: "Internal server error" });
-    } else {
-      response.json(results);
-    }
-  });
->>>>>>> Stashed changes
 });
 
 export default fullAlbumRouter;
