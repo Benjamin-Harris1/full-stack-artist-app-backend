@@ -66,6 +66,8 @@ fullAlbumRouter.get("/search", (request, response) => {
   dbConnection.query(queryString, values, (error, results) => {
     if (error) {
       console.log(error);
+      response.status(500).json({ error: "Internal server error" });
+
     } else {
       response.json(results);
     }
