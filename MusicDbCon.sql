@@ -74,6 +74,7 @@ VALUES
     ("Ella Fitzgerald", "1934"),
     ("Jay-Z", "1995"),
     ("Bob Marley", "1962");
+    ("Taylor Swift", "2006")
 
 
 -- Insert data into the albums table
@@ -94,6 +95,7 @@ VALUES
     ("Ella Fitzgerald Sings the Cole Porter Song Book", "1956-03-20"),
     ("The Blueprint", "2001-09-11"),
     ("Legend", "1984-05-08");
+    ("Midnights", "2022-10-21")
 
 -- Insert data into the tracks table
 INSERT INTO tracks (title, duration)
@@ -113,6 +115,7 @@ VALUES
     ("I Get a Kick Out of You", "3:06"),
     ("Takeover", "4:27"),
     ("No Woman, No Cry", "3:57");
+    ("Anti-hero", "3:21")
 
 
 -- Insert data into the linking tables tracks_albums and tracks_artists
@@ -133,6 +136,8 @@ VALUES
     (13, 13),
     (14, 14),
     (15, 15);
+    (16, 16)
+
 
 INSERT INTO tracks_artists (track_id, artist_id)
 VALUES
@@ -151,6 +156,7 @@ VALUES
     (13, 13),
     (14, 14),
     (15, 15);
+    (16, 16)
 
 INSERT INTO albums_artists (album_id,artist_id )
 VALUES
@@ -169,6 +175,7 @@ VALUES
     (13, 13),
     (14, 14),
     (15, 15);
+    (16, 16)
 
 
 SELECT id, name, career_start FROM artists;
