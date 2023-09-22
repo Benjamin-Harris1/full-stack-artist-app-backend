@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: "musicdb-project"
           slot-name: "Production"
-          publish-profile: ${ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_59EA4CE693AB4E79B9153AAE1EFFA3D5 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_59EA4CE693AB4E79B9153AAE1EFFA3D5 }}
           package: .
