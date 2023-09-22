@@ -12,7 +12,7 @@ fullAlbumRouter.post("/", async (request, response) => {
   const albumQuery = /*SQL*/ `
   INSERT INTO albums (title, release_date)
   VALUES (?, ?);`;
-  const albumValues = [body.album_title, body.release_date];
+  const albumValues = [body.album_title, body.album_release_date];
   const [albumResult] = await dbconfig.execute(albumQuery, albumValues);
 
   const artistQuery = "INSERT INTO artists (name, career_start) VALUES (?, ?);";
