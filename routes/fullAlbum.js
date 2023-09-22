@@ -12,7 +12,7 @@ fullAlbumRouter.post("/", async (request, response) => {
   const albumQuery = /*SQL*/ `
   INSERT INTO albums (title, release_date)
   VALUES (?, ?);`;
-  const albumValues = [body.album_title, body.release_date];
+  const albumValues = [body.album_title, body.album_release_date];
   const [albumResult] = await dbconfig.execute(albumQuery, albumValues);
 
   const artistQuery = "INSERT INTO artists (name, career_start) VALUES (?, ?);";
@@ -54,7 +54,7 @@ fullAlbumRouter.post("/", async (request, response) => {
   response.json(result[0]);
 });
 
-fullAlbumRouter.get("/search", (request, response) => {
+fullAlbumRouter.get("/search", async (request, response) => {
   const query = request.query.q.toLowerCase();
   const queryString = /*sql*/ `
     SELECT * FROM artists WHERE name LIKE ?
@@ -63,13 +63,8 @@ fullAlbumRouter.get("/search", (request, response) => {
     UNION
     SELECT * FROM tracks WHERE title LIKE ?;`;
   const values = [`%${query}%`, `%${query}%`, `%${query}%`];
-  dbConnection.query(queryString, values, (error, results) => {
-    if (error) {
-      console.log(error);
-    } else {
-      response.json(results);
-    }
-  });
+  const [results] = await dbconfig.execute(queryString, values);
+  response.json(results);
 });
 
 export default fullAlbumRouter;
