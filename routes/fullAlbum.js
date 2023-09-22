@@ -3,12 +3,10 @@ import { dbconfig } from "../database.js";
 
 const fullAlbumRouter = Router();
 
-/*  inserts an artist, an album and a track and associates them in junction tables
-     format: {album_title:string, album_release_date:string, artist_name:string, artist_career_start:string, track_title:string, track_duration:int}
-    Planned format:{album_title:string, album_release_date:string, artist_name:string, artist_career_start:string, tracks_title:[string], tracks_duration:[int]}*/
+/*  inserts an artist, an album and several tracks and associates them in junction tables
+      format:{album_title:string, album_release_date:string, artist_name:string, artist_career_start:string, tracks_title:[string], tracks_duration:[time]}*/
 fullAlbumRouter.post("/", async (request, response) => {
   const body = request.body;
-  console.log(`starting a full post tracks_title: ${body.tracks_title}`);
   let trackID;
 
   const albumQuery = /*SQL*/ `
@@ -55,7 +53,6 @@ fullAlbumRouter.post("/", async (request, response) => {
   INNER JOIN tracks_artists ON tracks.id = tracks_artists.track_id
   INNER JOIN artists ON tracks_artists.artist_id = artists.id
   WHERE tracks.id = ?;`;
-  console.log(`TrackID = ${trackID}`);
   const values = [trackID];
   const [result] = await dbconfig.execute(query, values);
 
