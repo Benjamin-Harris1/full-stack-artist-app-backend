@@ -67,7 +67,6 @@ fullAlbumRouter.get("/search", (request, response) => {
     if (error) {
       console.log(error);
       response.status(500).json({ error: "Internal server error" });
-
     } else {
       response.json(results);
     }
