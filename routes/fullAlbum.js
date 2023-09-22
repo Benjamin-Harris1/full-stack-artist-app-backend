@@ -4,24 +4,24 @@ import { dbconfig } from "../database.js";
 const fullAlbumRouter = Router();
 
 /*  inserts an artist, an album and a track and associates them in junction tables
-     Format: {title:string, release_date:string, name:string, career_start:string}
+     Format: {album_title:string, album_release_date:string, artist_name:string, artist_career_start:string, track_title:string, track_duration:int}
     Planned*/
 fullAlbumRouter.post("/", async (request, response) => {
-  const album = request.body;
+  const body = request.body;
 
   const albumQuery = /*SQL*/ `
   INSERT INTO albums (title, release_date)
   VALUES (?, ?);`;
-  const albumValues = [album.title, album.release_date];
+  const albumValues = [body.album_title, body.release_date];
   const [albumResult] = await dbconfig.execute(albumQuery, albumValues);
 
   const artistQuery = "INSERT INTO artists (name, career_start) VALUES (?, ?);";
   const artistValues = [body.artist_name, body.artist_career_start];
-  const [artistResults] = await dbconfig.execute(artistQuery, artistValues);
+  const [artistResult] = await dbconfig.execute(artistQuery, artistValues);
 
   const tracksQuery = "INSERT INTO tracks (title, duration) VALUES (?, ?);";
   const tracksValues = [body.track_title, body.track_duration];
-  const [tracksResults] = await dbconfig.execute(tracksQuery, tracksValues);
+  const [tracksResult] = await dbconfig.execute(tracksQuery, tracksValues);
 
   const albums_artistsQuery = /*SQL*/ `
   INSERT INTO albums_artists (album_id, artist_id)
