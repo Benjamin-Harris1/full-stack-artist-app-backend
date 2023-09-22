@@ -54,7 +54,7 @@ fullAlbumRouter.post("/", async (request, response) => {
   response.json(result[0]);
 });
 
-fullAlbumRouter.get("/search", (request, response) => {
+fullAlbumRouter.get("/search", async (request, response) => {
   const query = request.query.q.toLowerCase();
   const queryString = /*sql*/ `
     SELECT * FROM artists WHERE name LIKE ?
@@ -63,14 +63,8 @@ fullAlbumRouter.get("/search", (request, response) => {
     UNION
     SELECT * FROM tracks WHERE title LIKE ?;`;
   const values = [`%${query}%`, `%${query}%`, `%${query}%`];
-  dbConnection.query(queryString, values, (error, results) => {
-    if (error) {
-      console.log(error);
-      response.status(500).json({ error: "Internal server error" });
-    } else {
-      response.json(results);
-    }
-  });
+  const [results] = await dbconfig.execute(queryString, values);
+  response.json(results);
 });
 
 export default fullAlbumRouter;
