@@ -77,4 +77,30 @@ FROM tracks WHERE title LIKE ?;`;
   response.json(results);
 });
 
+fullAlbumRouter.get("/:id", async (request, response) => {
+  const id = request.params.id;
+
+  const query = /*SQL*/ `
+    SELECT
+      albums.title AS album_title,
+      albums.release_date AS album_release_date,
+      artists.name AS artist_name,
+      artists.career_start AS artist_career_start,
+      tracks.title AS track_title,
+      tracks.duration AS track_duration
+    FROM albums
+    INNER JOIN albums_artists ON albums.id = albums_artists.album_id
+    INNER JOIN artists ON albums_artists.artist_id = artists.id
+    INNER JOIN tracks_albums ON albums.id = tracks_albums.album_id
+    INNER JOIN tracks ON tracks_albums.track_id = tracks.id
+    WHERE albums.id = ?;`;
+
+  const [results] = await dbconfig.execute(query, [id]);
+  if (results.length === 0) {
+    console.log("Album not found");
+  } else {
+    response.json(results);
+  }
+});
+
 export default fullAlbumRouter;
