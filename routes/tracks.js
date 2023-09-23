@@ -1,4 +1,4 @@
-import { dbconfig } from "../database.js";
+import { dbconfig } from "../app.js";
 import { Router } from "express";
 
 const tracksRouter = Router();

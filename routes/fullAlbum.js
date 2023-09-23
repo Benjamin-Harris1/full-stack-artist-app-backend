@@ -1,5 +1,5 @@
 import { Router, request } from "express";
-import { dbconfig } from "../database.js";
+import { dbconfig } from "../app.js";
 
 const fullAlbumRouter = Router();
 
