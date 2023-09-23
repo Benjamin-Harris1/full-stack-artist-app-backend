@@ -3,7 +3,7 @@ import cors from "cors";
 import artistsRouter from "./routes/artists.js";
 import albumsRouter from "./routes/albums.js";
 import tracksRouter from "./routes/tracks.js";
-import fullAlbumRouter from "./routes/fullalbum.js";
+import fullAlbumRouter from "./routes/fullAlbum.js";
 
 const app = express();
 const port = process.env.port || 3000;
