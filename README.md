@@ -8,6 +8,6 @@ I terminalen vær sikker på du er i root folderen. Når du er der skriv følgen
 
 node --watch app.js
 
-Link til azure deployment:
+Link til azure deployment: https://mabi-testdata-01.azurewebsites.net/
 
-Link til github-pages deployment:
+Link til github-pages deployment: https://fili0727.github.io/full-stack-artist-app-frontend/
