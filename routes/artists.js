@@ -49,8 +49,6 @@ artistsRouter.get("/", async (request, response) => {
       };
       artistAlbums.push(artistObj);
     }
-
-    // Push the album ID into the artist's array
   });
 
   // Close the database connection
