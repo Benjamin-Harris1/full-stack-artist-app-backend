@@ -217,4 +217,14 @@ FROM
     albums ON albums_artists.album_id = albums.id;
 
 
-
+SELECT
+    albums.id,
+    albums.title,
+    albums.release_date,
+    tracks.id as track_id
+FROM
+    albums
+        JOIN
+    tracks_albums ON albums.id = tracks_albums.album_id
+        JOIN
+    tracks ON tracks_albums.track_id = tracks.id;

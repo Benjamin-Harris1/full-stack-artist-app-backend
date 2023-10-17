@@ -11,6 +11,7 @@ artistsRouter.get("/", async (request, response) => {
     artists.id,
     artists.name as artist_name,
     artists.career_start,
+    artists.img,
     albums.id as album_id
     FROM
       artists
@@ -31,6 +32,7 @@ artistsRouter.get("/", async (request, response) => {
     const artistId = row.id;
     const artistName = row.artist_name;
     const artistCareerStart = row.career_start;
+    const artistImg = row.img;
     const albumId = row.album_id;
 
     const result = artistAlbums.find(obj => {
@@ -45,6 +47,7 @@ artistsRouter.get("/", async (request, response) => {
         id: artistId,
         name: artistName,
         career_start: artistCareerStart,
+        img: artistImg,
         albums: [albumId],
       };
       artistAlbums.push(artistObj);
