@@ -67,8 +67,14 @@ tracksRouter.put("/:id", async (request, response) => {
 // Deletes a track with the specific ID
 tracksRouter.delete("/:id", async (request, response) => {
   const id = request.params.id;
-  const query = "DELETE FROM tracks WHERE id=?;";
   const values = [id];
+
+  const deleteAssociationQuery = /*SQL*/ `
+    DELETE FROM tracks_artists WHERE track_id = ?;
+    Delete From tracks_albums WHERE track_id = ?`;
+  await dbconfig.execute(deleteAssociationQuery, values);
+
+  const query = "DELETE FROM tracks WHERE id=?;";
   const [results] = await dbconfig.execute(query, values);
   response.json(results);
 });
