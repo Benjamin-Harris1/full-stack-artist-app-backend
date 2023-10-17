@@ -67,8 +67,8 @@ artistsRouter.get("/:id", async (request, response) => {
 // Creates an artist, format: {name:string, career_start: int}
 artistsRouter.post("/", async (request, response) => {
   const artist = request.body;
-  const query = "INSERT INTO artists (name, career_start) VALUES (?, ?);";
-  const values = [artist.name, artist.career_start];
+  const query = "INSERT INTO artists (name, career_start, img) VALUES (?, ?, ?);";
+  const values = [artist.name, artist.career_start, artist.img];
   const [results] = await dbconfig.execute(query, values);
   response.json(results);
 });
