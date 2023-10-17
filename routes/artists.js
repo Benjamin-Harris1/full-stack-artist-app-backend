@@ -100,7 +100,7 @@ artistsRouter.delete("/:id", async (request, response) => {
   await dbconfig.execute(deleteAssociationQuery2, values);
 
   const query = "DELETE FROM artists WHERE id=?;";
-  const [results] = await dbconfig.execute(query, values, fields);
+  const [results] = await dbconfig.execute(query, values);
   response.json(results);
 });
 
