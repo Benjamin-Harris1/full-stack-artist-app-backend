@@ -107,12 +107,15 @@ albumsRouter.put("/:id", async (request, response) => {
 // deletetes an album and associated references in albums_artists by id given
 albumsRouter.delete("/:id", async (request, response) => {
   const id = request.params.id;
-  const values = [id, id];
+  const values = [id];
 
   const deleteAssociationQuery = /*SQL*/ `
-    DELETE FROM albums_artists WHERE album_id = ?;
-    DELETE FROM tracks_albums WHERE album_id = ?;`
+    DELETE FROM albums_artists WHERE album_id = ?;`
   await dbconfig.execute(deleteAssociationQuery, values);
+  
+  const deleteAssociationQuery2 = /*SQL*/ `
+    DELETE FROM tracks_albums WHERE album_id = ?;`
+  await dbconfig.execute(deleteAssociationQuery2, values);
 
   const query = "DELETE FROM albums WHERE id=?;";
 
