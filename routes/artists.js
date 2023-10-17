@@ -89,11 +89,11 @@ artistsRouter.put("/:id", async (request, response) => {
 // Deletes an artist with the specific ID
 artistsRouter.delete("/:id", async (request, response) => {
   const id = request.params.id;
-  const values = [id];
+  const values = [id, id];
 
   const deleteAssociationQuery = /*SQL*/ `
   DELETE FROM albums_artists WHERE artist_id = ?;
-  Delete From tracks_artists WHERE artistid = ?`;
+  DELETE FROM tracks_artists WHERE artistid = ?`;
   await dbconfig.execute(deleteAssociationQuery, values);
 
   const query = "DELETE FROM artists WHERE id=?;";
