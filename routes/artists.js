@@ -80,8 +80,8 @@ artistsRouter.post("/", async (request, response) => {
 artistsRouter.put("/:id", async (request, response) => {
   const id = request.params.id;
   const artist = request.body;
-  const query = "UPDATE artists SET name=?, career_start=? WHERE id=?;";
-  const values = [artist.name, artist.career_start, id];
+  const query = "UPDATE artists SET name=?, career_start=?, img=? WHERE id=?;";
+  const values = [artist.name, artist.career_start, artist.img, id];
   const [results] = await dbconfig.execute(query, values);
   response.json(results);
 });
