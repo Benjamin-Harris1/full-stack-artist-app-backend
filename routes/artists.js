@@ -39,7 +39,7 @@ artistsRouter.get("/", async (request, response) => {
     // check if artistAlbums includes artistID, if so, add the abum_id to albums
     if (result) {
       artistAlbums.find(a => a.id == artistId).albums.push(albumId);
-      console.log(artistAlbums.find(a => a.id == artistId));
+      // console.log(artistAlbums.find(a => a.id == artistId));
     } else {
       const artistObj = {
         id: artistId,
