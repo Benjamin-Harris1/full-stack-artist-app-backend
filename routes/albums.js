@@ -111,7 +111,7 @@ albumsRouter.delete("/:id", async (request, response) => {
 
   const deleteAssociationQuery = /*SQL*/ `
     DELETE FROM albums_artists WHERE album_id = ?;
-    DELETE FROM tracks_albums WHERE album_id = ?`;
+    DELETE FROM tracks_albums WHERE album_id = ?;`
   await dbconfig.execute(deleteAssociationQuery, values);
 
   const query = "DELETE FROM albums WHERE id=?;";
