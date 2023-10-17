@@ -198,14 +198,33 @@ FROM tracks
 INNER JOIN tracks_albums ON tracks.id = tracks_albums.track_id
 INNER JOIN albums ON tracks_albums.album_id = albums.id
 INNER JOIN tracks_artists ON tracks.id = tracks_artists.track_id
-INNER JOIN artists ON tracks_artists.artist_id = artists.id
-WHERE tracks.id = 4;
+INNER JOIN artists ON tracks_artists.artist_id = artists.id;
+
+SELECT artists.id as id, artists.name as name, artists.career_start as career_start, albums.id as album_id
+FROM artists
+INNER JOIN albums_artists ON artists.id = albums_artists.artist_id
+INNER JOIN albums ON albums_artists.album_id = albums.id;
+
+SELECT
+    artists.id as id,
+    artists.name as artist_name,
+    albums.id as album_id
+FROM
+    artists
+        LEFT JOIN
+    albums_artists ON artists.id = albums_artists.artist_id
+         JOIN
+    albums ON albums_artists.album_id = albums.id;
 
 
-
-INSERT INTO tracks_artists (track_id, artist_id)
-VALUES (5, 7)
-
-
-
-
+SELECT
+    albums.id,
+    albums.title,
+    albums.release_date,
+    tracks.id as track_id
+FROM
+    albums
+        JOIN
+    tracks_albums ON albums.id = tracks_albums.album_id
+        JOIN
+    tracks ON tracks_albums.track_id = tracks.id;

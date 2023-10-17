@@ -6,10 +6,53 @@ const albumsRouter = Router();
 // SKAL LAVES TIL mysql/promises SYNTAX LIGESOM DER ER GJORT I ARTISTS.JS
 
 albumsRouter.get("/", async (request, response) => {
-  const query = "SELECT * FROM albums ORDER BY title;";
+  const sql = `
+    SELECT
+    albums.id,
+    albums.title,
+    albums.release_date,
+    tracks.id as track_id
+    FROM
+      albums
+    JOIN
+      tracks_albums ON albums.id = tracks_albums.album_id
+    JOIN
+      tracks ON tracks_albums.track_id = tracks.id;
+  `;
 
-  const [results] = await dbconfig.execute(query);
-  response.json(results);
+  // Execute the SQL query
+  const [results] = await dbconfig.execute(sql);
+
+  // Create a list to store the data
+  const albumList = [];
+
+  // Loop through the SQL query results
+  results.forEach(row => {
+    const albumId = row.id;
+    const albumTitle = row.title;
+    const albumReleaseDate = row.release_date;
+    const trackId = row.track_id;
+
+    const result = albumList.find(obj => {
+      return obj.id == albumId;
+    });
+    // check if AlbumList includes albumId, if so, add the track_id to tracks
+    if (result) {
+      albumList.find(a => a.id == albumId).tracks.push(trackId);
+      console.log(albumList.find(a => a.id == albumId));
+    } else {
+      const albumObj = {
+        id: albumId,
+        title: albumTitle,
+        release_date: albumReleaseDate,
+        tracks: [trackId],
+      };
+      albumList.push(albumObj);
+    }
+  });
+
+  // Close the database connection
+  response.json(albumList);
 });
 
 albumsRouter.get("/:id", async (request, response) => {
@@ -64,12 +107,15 @@ albumsRouter.put("/:id", async (request, response) => {
 // deletetes an album and associated references in albums_artists by id given
 albumsRouter.delete("/:id", async (request, response) => {
   const id = request.params.id;
-  const values = [id, id];
+  const values = [id];
 
   const deleteAssociationQuery = /*SQL*/ `
-    DELETE FROM albums_artists WHERE album_id = ?;
-    Delete From tracks_albums WHERE album_id = ?`;
+    DELETE FROM albums_artists WHERE album_id = ?;`
   await dbconfig.execute(deleteAssociationQuery, values);
+  
+  const deleteAssociationQuery2 = /*SQL*/ `
+    DELETE FROM tracks_albums WHERE album_id = ?;`
+  await dbconfig.execute(deleteAssociationQuery2, values);
 
   const query = "DELETE FROM albums WHERE id=?;";
 
