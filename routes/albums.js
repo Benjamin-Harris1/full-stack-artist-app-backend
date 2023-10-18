@@ -14,10 +14,10 @@ albumsRouter.get("/", async (request, response) => {
     tracks.id as track_id
     FROM
       albums
-    JOIN
+    LEFT JOIN
       tracks_albums ON albums.id = tracks_albums.album_id
-    JOIN
-      tracks ON tracks_albums.track_id = tracks.id;
+    LEFT JOIN
+    tracks ON tracks_albums.track_id = tracks.id;
   `;
 
   // Execute the SQL query

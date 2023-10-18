@@ -4,7 +4,7 @@ import { dbconfig } from "../database.js";
 const fullAlbumRouter = Router();
 
 /*  inserts an artist, an album and several tracks and associates them in junction tables
-      format:{album_title:string, album_release_date:string, artist_name:string, artist_career_start:string, tracks_title:[string], tracks_duration:[time]}*/
+      format:{album_title:string, album_release_date:string, artist_name:string, artist_career_start:string, img:string tracks_title:[string], tracks_duration:[time]}*/
 fullAlbumRouter.post("/", async (request, response) => {
   const body = request.body;
   let trackID;
