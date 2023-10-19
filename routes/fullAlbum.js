@@ -6,7 +6,7 @@ const fullAlbumRouter = Router();
 /*  inserts an artist, an album and several tracks and associates them in junction tables
       format:{album_title:string, album_release_date:string, artist_name:string, artist_career_start:string, img:string tracks_title:[string], tracks_duration:[time]}*/
 fullAlbumRouter.post("/", async (request, response) => {
-  console.log(`Attempting to post with ${body}`);
+  console.log(`Attempting to post artists`);
   const body = request.body;
   let trackID;
 
