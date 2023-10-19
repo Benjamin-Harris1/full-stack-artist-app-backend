@@ -7,6 +7,7 @@ const fullAlbumRouter = Router();
       format:{album_title:string, album_release_date:string, artist_name:string, artist_career_start:string, img:string tracks_title:[string], tracks_duration:[time]}*/
 fullAlbumRouter.post("/", async (request, response) => {
   const body = request.body;
+  console.log(`Attempting to post with ${body}`);
   let trackID;
 
   const albumQuery = /*SQL*/ `
@@ -24,11 +25,11 @@ fullAlbumRouter.post("/", async (request, response) => {
   VALUES (?, ?);`;
   const albums_artistsValues = [albumResult.insertId, artistResult.insertId];
   const [albums_artistsResult] = await dbconfig.execute(albums_artistsQuery, albums_artistsValues);
-  for (let i in body.tracks_title) {
-    console.log(`attempting to create track ${i} with ${body.tracks_title[i]} and ${body.tracks_duration[i]}`);
+  for (const track of body.tracks) {
+    console.log(`attempting to create track ${track} with ${track.title} and ${track.duration}`);
 
     const tracksQuery = "INSERT INTO tracks (title, duration) VALUES (?, ?);";
-    const tracksValues = [body.tracks_title[i], body.tracks_duration[i]];
+    const tracksValues = [track.title, track.duration];
     const [tracksResult] = await dbconfig.execute(tracksQuery, tracksValues);
 
     const tracks_artistsQuery = /*SQL*/ `
@@ -58,28 +59,26 @@ fullAlbumRouter.post("/", async (request, response) => {
 
   response.json(result);
 
+  const mysql = require("mysql2");
 
+  // Create a MySQL connection
+  const connection = mysql.createConnection({
+    host: "your_mysql_host",
+    user: "your_mysql_user",
+    password: "your_mysql_password",
+    database: "your_database_name",
+  });
 
-  const mysql = require('mysql2');
+  // Connect to the MySQL database
+  connection.connect(err => {
+    if (err) {
+      console.error("Error connecting to MySQL:", err);
+      return;
+    }
+    console.log("Connected to MySQL database");
 
-// Create a MySQL connection
-const connection = mysql.createConnection({
-  host: 'your_mysql_host',
-  user: 'your_mysql_user',
-  password: 'your_mysql_password',
-  database: 'your_database_name',
-});
-
-// Connect to the MySQL database
-connection.connect((err) => {
-  if (err) {
-    console.error('Error connecting to MySQL:', err);
-    return;
-  }
-  console.log('Connected to MySQL database');
-  
-  // Your SQL query to retrieve artists and albums
-  const sql = `
+    // Your SQL query to retrieve artists and albums
+    const sql = `
     SELECT
         artists.artist_name,
         albums.album_id
@@ -90,40 +89,39 @@ connection.connect((err) => {
     JOIN
         albums ON artists_albums.album_id = albums.album_id;
   `;
-  
-  // Execute the SQL query
-  connection.query(sql, (err, results) => {
-    if (err) {
-      console.error('Error executing SQL query:', err);
-      connection.end(); // Close the database connection in case of an error
-      return;
-    }
-    
-    // Create an object to store the data
-    const artistAlbums = {};
-    
-    // Loop through the SQL query results
-    results.forEach((row) => {
-      const artistName = row.artist_name;
-      const albumId = row.album_id;
-      
-      // Check if the artist is already in the object, if not, create an empty array
-      if (!artistAlbums[artistName]) {
-        artistAlbums[artistName] = [];
-      }
-      
-      // Push the album ID into the artist's array
-      artistAlbums[artistName].push(albumId);
-    });
-    
-    // Now, artistAlbums is an object where each artist has a list of album IDs
-    console.log(artistAlbums);
-    
-    // Close the database connection
-    connection.end();
-  });
-});
 
+    // Execute the SQL query
+    connection.query(sql, (err, results) => {
+      if (err) {
+        console.error("Error executing SQL query:", err);
+        connection.end(); // Close the database connection in case of an error
+        return;
+      }
+
+      // Create an object to store the data
+      const artistAlbums = {};
+
+      // Loop through the SQL query results
+      results.forEach(row => {
+        const artistName = row.artist_name;
+        const albumId = row.album_id;
+
+        // Check if the artist is already in the object, if not, create an empty array
+        if (!artistAlbums[artistName]) {
+          artistAlbums[artistName] = [];
+        }
+
+        // Push the album ID into the artist's array
+        artistAlbums[artistName].push(albumId);
+      });
+
+      // Now, artistAlbums is an object where each artist has a list of album IDs
+      console.log(artistAlbums);
+
+      // Close the database connection
+      connection.end();
+    });
+  });
 });
 
 fullAlbumRouter.get("/search", async (request, response) => {
